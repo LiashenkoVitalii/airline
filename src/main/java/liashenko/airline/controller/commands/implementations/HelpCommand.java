@@ -1,12 +1,13 @@
 package liashenko.airline.controller.commands.implementations;
 
+import liashenko.airline.controller.commands.Command;
 import liashenko.airline.controller.commands.Help;
-import liashenko.airline.controller.commands.ICommand;
 import org.apache.log4j.Logger;
 
 import java.util.stream.Stream;
 
-public class HelpCommand implements ICommand {
+//used to print the list of available commands on the screen
+public class HelpCommand implements Command {
     private static final Logger logger = Logger.getLogger(HelpCommand.class);
 
     @Override

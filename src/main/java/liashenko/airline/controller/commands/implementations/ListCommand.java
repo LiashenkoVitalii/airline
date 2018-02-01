@@ -1,12 +1,12 @@
 package liashenko.airline.controller.commands.implementations;
 
-import liashenko.airline.controller.commands.ICommand;
-import liashenko.airline.service.ServiceFactory;
-import liashenko.airline.service.exceptions.ServiceException;
+import liashenko.airline.controller.commands.Command;
+import liashenko.airline.model.service.ServiceFactory;
+import liashenko.airline.model.service.exceptions.ServiceException;
 import org.apache.log4j.Logger;
 
-
-public class ListCommand implements ICommand {
+//used to print the list of all airplanes from the airline park
+public class ListCommand implements Command {
     private static final Logger logger = Logger.getLogger(ListCommand.class);
 
     private ServiceFactory serviceFactory;
@@ -19,10 +19,10 @@ public class ListCommand implements ICommand {
     public String handle(String[] arr) {
         if (arr.length > 1) return "Wrong count of params";
         try {
-            return serviceFactory.getMainService().getAirlineAirplanesList().orElse("empty");
+            return serviceFactory.getMainService().getAirlineAirplanesList().orElse("Data is absent");
         } catch (ServiceException ex) {
             logger.error(ex.getMessage());
-            return "not ok";
+            return "We got an error";
         }
     }
 }

@@ -1,13 +1,14 @@
 package liashenko.airline.controller.commands.implementations;
 
 import liashenko.airline.controller.CommandsHelper;
+import liashenko.airline.controller.commands.Command;
 import liashenko.airline.controller.commands.Help;
-import liashenko.airline.controller.commands.ICommand;
-import liashenko.airline.service.ServiceFactory;
-import liashenko.airline.service.exceptions.ServiceException;
+import liashenko.airline.model.service.ServiceFactory;
+import liashenko.airline.model.service.exceptions.ServiceException;
 import org.apache.log4j.Logger;
 
-public class RemoveCommand implements ICommand {
+//used to remove the airplane from the airline park
+public class RemoveCommand implements Command {
     private static final Logger logger = Logger.getLogger(RemoveCommand.class);
 
     private ServiceFactory serviceFactory;
@@ -22,10 +23,11 @@ public class RemoveCommand implements ICommand {
         String idStr = Help.getValueByKey(arr, CommandsHelper.SERIAL_ID_KEY);
         try {
             Long airplaneSerialNum = Long.valueOf(idStr);
-            return serviceFactory.getMainService().removeAirplaneFromAirlineFleet(airplaneSerialNum) ? "ok" : "not ok";
+            return serviceFactory.getMainService().removeAirplaneFromAirlineFleet(airplaneSerialNum)
+                    ? "The airplane have been removed" : "The airplane can not be removed";
         } catch (ServiceException | NumberFormatException ex) {
             logger.error(ex.getMessage());
-            return "not ok";
+            return "We got an error";
         }
     }
 }

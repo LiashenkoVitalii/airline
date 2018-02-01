@@ -1,11 +1,12 @@
 package liashenko.airline.controller.commands.implementations;
 
-import liashenko.airline.controller.commands.ICommand;
-import liashenko.airline.service.ServiceFactory;
-import liashenko.airline.service.exceptions.ServiceException;
+import liashenko.airline.controller.commands.Command;
+import liashenko.airline.model.service.ServiceFactory;
+import liashenko.airline.model.service.exceptions.ServiceException;
 import org.apache.log4j.Logger;
 
-public class ExitCommand implements ICommand {
+//used to save all changes and exit from the app
+public class ExitCommand implements Command {
     private static final Logger logger = Logger.getLogger(ExitCommand.class);
 
     private ServiceFactory serviceFactory;

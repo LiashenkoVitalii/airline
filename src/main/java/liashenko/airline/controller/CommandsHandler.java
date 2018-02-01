@@ -1,9 +1,10 @@
 package liashenko.airline.controller;
 
-import liashenko.airline.controller.commands.ICommand;
-import liashenko.airline.persistence.exceptions.PersistenceException;
+import liashenko.airline.controller.commands.Command;
+import liashenko.airline.model.persistence.exceptions.PersistenceException;
 import org.apache.log4j.Logger;
 
+//resolves users commands and returns result of their processing
 public abstract class CommandsHandler {
     private static final Logger logger = Logger.getLogger(CommandsHandler.class);
 
@@ -16,7 +17,7 @@ public abstract class CommandsHandler {
 
     public static String handleCommand(String str) throws PersistenceException {
         String[] commandsArr = enterUsersCommand(str);
-        ICommand command = COMMANDS_HELPER.getCommand(commandsArr[0].toLowerCase());
+        Command command = COMMANDS_HELPER.getCommand(commandsArr[0].toLowerCase());
         return command.handle(commandsArr);
     }
 }

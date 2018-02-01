@@ -1,14 +1,15 @@
 package liashenko.airline.controller;
 
-import liashenko.airline.controller.commands.ICommand;
+import liashenko.airline.controller.commands.Command;
 import liashenko.airline.controller.commands.implementations.*;
-import liashenko.airline.service.ServiceFactory;
-import liashenko.airline.service.implementation.ServiceFactoryImpl;
+import liashenko.airline.model.service.ServiceFactory;
+import liashenko.airline.model.service.implementation.ServiceFactoryImpl;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
+//contains all available commands and keys, returns objects for their handling
 public class CommandsHelper {
     public static final String EXIT_COMMAND = "exit";
     public static final String SHOW_MODELS_COMMAND = "show_models";
@@ -16,7 +17,7 @@ public class CommandsHelper {
     public static final String PRODUCER_NAME_COMMAND_KEY = "-p";
     public static final String MODEL_NAME_COMMAND_KEY = "-m";
     public static final String REMOVE_COMMAND = "rm";
-    public static final String SERIAL_ID_KEY = "-serialNumber";
+    public static final String SERIAL_ID_KEY = "-serial";
     public static final String FIND_AIRCRAFT_COMMAND = "find";
     public static final String SORT_OF_AIRCRAFT_KEY = "-sort";
     public static final String SHOW_AIRLINE_AIRPLANES = "show_airplanes";
@@ -28,7 +29,7 @@ public class CommandsHelper {
     public static final String DEFAULT_COMMAND = "default";
     public static final String HELP_COMMAND = "help";
     private static final Logger logger = Logger.getLogger(CommandsHelper.class);
-    private static final Map<String, ICommand> COMMANDS_MAP = new HashMap<>();
+    private static final Map<String, Command> COMMANDS_MAP = new HashMap<>();
     public static CommandsHelper instance;
     private final ServiceFactory serviceFactory = new ServiceFactoryImpl();
 
@@ -44,7 +45,7 @@ public class CommandsHelper {
         return instance;
     }
 
-    private void initCommandsMap(Map<String, ICommand> commandMap) {
+    private void initCommandsMap(Map<String, Command> commandMap) {
         commandMap.put(EXIT_COMMAND, new ExitCommand(serviceFactory));
         commandMap.put(SHOW_MODELS_COMMAND, new ShowModelsCommand(serviceFactory));
         commandMap.put(ADD_COMMAND, new AddCommand(serviceFactory));
@@ -59,7 +60,7 @@ public class CommandsHelper {
         commandMap.put(HELP_COMMAND, new HelpCommand());
     }
 
-    public ICommand getCommand(String command) {
+    public Command getCommand(String command) {
         return COMMANDS_MAP.containsKey(command) ? COMMANDS_MAP.get(command) : COMMANDS_MAP.get(DEFAULT_COMMAND);
     }
 }

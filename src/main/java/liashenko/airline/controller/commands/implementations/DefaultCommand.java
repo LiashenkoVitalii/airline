@@ -1,10 +1,11 @@
 package liashenko.airline.controller.commands.implementations;
 
-import liashenko.airline.controller.commands.ICommand;
-import liashenko.airline.service.ServiceFactory;
+import liashenko.airline.controller.commands.Command;
+import liashenko.airline.model.service.ServiceFactory;
 import org.apache.log4j.Logger;
 
-public class DefaultCommand implements ICommand {
+//used to be executed if user entered non-existing command
+public class DefaultCommand implements Command {
     private static final Logger logger = Logger.getLogger(DefaultCommand.class);
 
     private ServiceFactory serviceFactory;
@@ -15,6 +16,6 @@ public class DefaultCommand implements ICommand {
 
     @Override
     public String handle(String[] arr) {
-        return "this command doesn't exist";
+        return "This command doesn't exist";
     }
 }
