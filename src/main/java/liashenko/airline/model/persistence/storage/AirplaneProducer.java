@@ -47,28 +47,31 @@ public class AirplaneProducer {
     }
 
     private void initAirplaneSet(Set<Airplane> airplaneSet) {
-        airplaneSet.add(new AirBusA310_300());
-        airplaneSet.add(new AirBusA330_200());
-        airplaneSet.add(new Boeing747());
-        airplaneSet.add(new Boeing777());
-        airplaneSet.add(new IL62());
-        airplaneSet.add(new IL96_300());
-        airplaneSet.add(new IL_96M());
-        airplaneSet.add(new AirBusA320_200());
-        airplaneSet.add(new Boeing737());
-        airplaneSet.add(new Boeing767());
-        airplaneSet.add(new IL86());
-        airplaneSet.add(new Tu154());
-        airplaneSet.add(new Tu134());
+        if (airplaneSet.isEmpty()) {
+            airplaneSet.add(new AirBusA310_300());
+            airplaneSet.add(new AirBusA330_200());
+            airplaneSet.add(new Boeing747());
+            airplaneSet.add(new Boeing777());
+            airplaneSet.add(new IL62());
+            airplaneSet.add(new IL96_300());
+            airplaneSet.add(new IL_96M());
+            airplaneSet.add(new AirBusA320_200());
+            airplaneSet.add(new Boeing737());
+            airplaneSet.add(new Boeing767());
+            airplaneSet.add(new IL86());
+            airplaneSet.add(new Tu154());
+            airplaneSet.add(new Tu134());
+        }
     }
 
     public Optional<Airplane> getNewAirplane(String producer, String model) {
         if (producer == null || model == null) throw new PersistenceException("Wrong parameter");
         Airplane airplane = getAirplaneByParams(producer, model);
         if (airplane == null) return Optional.empty();
-        airplane.setSerialNumber(getUniqueSerialNumber());
         try {
-            return Optional.of(airplane.clone());
+            Airplane newAirplane = airplane.clone();
+            newAirplane.setSerialNumber(getUniqueSerialNumber());
+            return Optional.of(newAirplane.clone());
         } catch (CloneNotSupportedException e) {
             logger.error(e.getMessage());
             throw new PersistenceException("Couldn't create new airplane");
@@ -95,12 +98,14 @@ public class AirplaneProducer {
 
     @SuppressWarnings("unchecked")
     public boolean loadData() {
-        try {
-            airplaneSet = (HashSet<Airplane>) DataReadWriteUtils.read(AIRPLANES_STORAGE_PATH);
-            uniqueSerialNumber = (Long) DataReadWriteUtils.read(AIRPLANES_UNIQUE_SERIAL_NUM_STORAGE_PATH);
-        } catch (ReadWriteException ex) {
-            logger.error(ex.getMessage());
-            return false;
+        if (airplaneSet == null || airplaneSet.isEmpty()){
+            try {
+                airplaneSet = (HashSet<Airplane>) DataReadWriteUtils.read(AIRPLANES_STORAGE_PATH);
+                uniqueSerialNumber = (Long) DataReadWriteUtils.read(AIRPLANES_UNIQUE_SERIAL_NUM_STORAGE_PATH);
+            } catch (ReadWriteException ex) {
+                logger.error(ex.getMessage());
+                return false;
+            }
         }
         return true;
     }
